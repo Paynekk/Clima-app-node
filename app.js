@@ -12,22 +12,21 @@ const argv = require('yargs').options({
 }).argv;
 
 
+let getInfo = async (direccion) => {
 
-let getInfo =  async (direccion) => {
+    try {
+        let coors = await lugar.getLugarLatLng(direccion);
+        let temp = await clima.getClima(coors.lat, coors.lon);
+        return `El clima en: ${coors.direccion} es de:  ${temp.temperatura}ºC`
 
-    try{
- let coors = await lugar.getLugarLatLng(direccion);
-    let temp = await clima.getClima(coors.lat,coors.lon);
-    return `El clima en: ${coors.direccion} es de:  ${temp.temperatura}ºC`
-
-    } catch (e){
-        return  `no se pudo determinar el cima e: ${direccion} `
+    } catch (e) {
+        return `no se pudo determinar el clima de: ${direccion} `
     }
 }
 
 getInfo(argv.direccion)
-.then(mensaje => console.log(mensaje))
-.catch (e => console.log(e));
+    .then(mensaje => console.log(mensaje))
+    .catch(e => console.log(e));
 
 
 
